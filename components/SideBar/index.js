@@ -15,10 +15,6 @@ function SideBar() {
   const { data: session } = useSession();
   console.log({ session });
 
-  const onLogoutClick = async () => {
-    await signOut();
-  };
-
   return (
     <Box
       minW="250px"
@@ -43,18 +39,18 @@ function SideBar() {
           <SideBarRow Icon={RiHome7Fill} text="Home" />
         </Link>
       </NextLink>
-      <NextLink>
+      <NextLink href="/profile" passHref>
         <Link style={{ textDecoration: "none" }}>
           <SideBarRow Icon={HiOutlineUser} text="Profile" />
         </Link>
       </NextLink>
-      <NextLink>
+      <NextLink href="/post" passHref>
         <Link style={{ textDecoration: "none" }}>
           <SideBarRow Icon={FiMail} text="My Argument" />
         </Link>
       </NextLink>
-      <Box onClick={onLogoutClick}>
-        <SideBarRow Icon={ImExit} text="Go home to yo mama!" />
+      <Box>
+        <SideBarRow Icon={ImExit} text="Go crying!" />
       </Box>
 
       <Button

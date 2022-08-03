@@ -20,7 +20,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
 function Login() {
-  const [emailPassword, setEmailPassword] = useState("");
+  const [emailUsername, setEmailUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [isLoginProcess, setisLoginProcess] = useState(false);
@@ -30,14 +30,23 @@ function Login() {
   if (session) router.replace("/home");
 
   const onLoginClick = async () => {
+    console.log(emailUsername);
     setisLoginProcess(true);
     const res = await signIn("credentials", {
       redirect: false,
-      emailPassword,
+      emailUsername,
       password,
     });
 
     //checking empty
+    if (emailUsername == "") {
+      setisLoginProcess(false);
+      return alert("Username or email field is empty");
+    }
+    if (password == "") {
+      setisLoginProcess(false);
+      return alert("Password field is empty");
+    }
 
     if (!res.error) {
       router.replace("/home");
@@ -71,8 +80,8 @@ function Login() {
             <FormLabel>Username or Email</FormLabel>
             <Input
               type="text"
-              value={emailPassword}
-              onChange={(event) => setEmailPassword(event.target.value)}
+              value={emailUsername}
+              onChange={(event) => setEmailUsername(event.target.value)}
             />
           </FormControl>
           <FormControl id="password" isRequired>

@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
             name="description"
             content="Place to fulfill your ego's needs"
           />
+          <link rel="icon" href="/fist-2.svg" />
         </Head>
         <Component {...pageProps} />
       </ChakraProvider>
