@@ -4,7 +4,7 @@ import { Flex, Button, Box, Text, HStack, VStack } from "@chakra-ui/react";
 import { getSession } from "next-auth/react";
 import axiosInstance from "../../services/axios";
 // import Post from "../../components/Post";
-// import PostBox from "../../components/PostBox";
+import PostBox from "../../components/PostBox";
 // import InfiniteScroll from "react-infinite-scroller";
 import UserProfile from "../../components/UserProfile";
 
@@ -37,6 +37,7 @@ function Home(props) {
     const res = await axiosInstance.get("/posts/", {
       params: { page: 1, pageSize },
     });
+    console.log(res.data);
 
     setPost(res.data.data);
     setPostLength(res.data.length);
@@ -95,26 +96,17 @@ function Home(props) {
         <Sidebar />
 
         <Flex flexGrow={"0.4"} w="70%" flexDirection="column" marginInline={2}>
-          {/* <PostBox user={props.user} getPost={getPost} />
-          <InfiniteScroll
-            pageStart={0}
-            loadMore={morePost}
-            hasMore={hasMore}
-            loader={
-              <Box
-                rounded={5}
-                boxShadow="md"
-                marginBottom={2}
-                padding="2"
-                marginInlineStart={"25%"}
-                key={0}
-              >
-                Loading ...
-              </Box>
-            }
+          <PostBox user={props.user} getPost={getPost} />
+          <Box
+            rounded={5}
+            boxShadow="md"
+            marginBottom={2}
+            padding="2"
+            marginInlineStart={"25%"}
+            key={0}
           >
             {renderPost()}
-          </InfiniteScroll> */}
+          </Box>
         </Flex>
         <UserProfile user={props.user} />
       </Flex>
@@ -125,7 +117,7 @@ function Home(props) {
 export async function getServerSideProps(context) {
   try {
     const session = await getSession({ req: context.req });
-    console.log({ session });
+    // console.log({ session });
 
     if (!session) return { redirect: { destination: "/login" } };
 
@@ -142,6 +134,7 @@ export async function getServerSideProps(context) {
     const getPost = await axiosInstance.get("/posts/", {
       params: { page, pageSize },
     });
+    console.log(getPost);
 
     return {
       props: { user: res.data.data.result, session },

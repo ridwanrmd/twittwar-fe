@@ -8,7 +8,7 @@ import { getSession } from "next-auth/react";
 
 export default function PostBox(props) {
   const [user, setUser] = useState(props.user);
-  const [desc, setDesc] = useState("");
+  const [caption, setCaption] = useState("");
   const [post_image, setPostImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(!props.user.isVerified);
@@ -24,13 +24,13 @@ export default function PostBox(props) {
       headers: { Authorization: `Bearer ${accessToken}` },
     };
     const newPost = {
-      desc,
+      caption,
     };
     if (post_image) {
       const data = new FormData();
       const fileName = Date.now() + post_image.name;
       data.append("name", fileName);
-      data.append("postImage", postImage);
+      data.append("post_image", post_image);
       newPost.postImage = `/public/post/${fileName}`;
       try {
         await axiosInstance.post("/posts/upload", data, config);
@@ -60,7 +60,7 @@ export default function PostBox(props) {
     >
       <Flex flexWrap="wrap">
         <Image
-          src={api_origin + user.profilePicture}
+          src={api_origin + user.image}
           width="40px"
           height="40px"
           objectFit={"cover"}
@@ -73,25 +73,25 @@ export default function PostBox(props) {
           marginStart={4}
           resize="none"
           height="fit-content"
-          placeholder="What's happening?"
-          value={desc}
+          placeholder="Confront somebody?"
+          value={caption}
           onChange={(e) => setDesc(e.target.value)}
         />
-        {postImage && (
+        {post_image && (
           <Flex flexDirection="column">
             <CloseIcon onClick={() => setPostImage(null)} />
             <Image
               maxHeight="400px"
               width="90%"
               rounded="10"
-              src={URL.createObjectURL(postImage)}
+              src={URL.createObjectURL(post_image)}
             />
           </Flex>
         )}
       </Flex>
       <Flex justifyContent="space-between" marginTop={2}>
         <label
-          htmlFor="postImage"
+          htmlFor="post_image"
           style={{
             alignItems: "center",
             cursor: "pointer",
@@ -103,7 +103,7 @@ export default function PostBox(props) {
           <input
             style={{ display: "none" }}
             type="file"
-            id="postImage"
+            id="post_image"
             disabled={isDisabled}
             onChange={(e) => setPostImage(e.target.files[0])}
           />
@@ -111,11 +111,11 @@ export default function PostBox(props) {
         <Button
           isLoading={isLoading}
           variant="solid"
-          colorScheme="twitter"
+          colorScheme="red"
           rounded="lg"
           onClick={postHandler}
         >
-          Cuit
+          WAR!
         </Button>
       </Flex>
     </Box>
