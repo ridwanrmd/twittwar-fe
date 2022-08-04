@@ -21,7 +21,6 @@ import {
 import UserProfile from "../../components/UserProfile";
 
 function Profile(props) {
-  console.log(props);
   const [avatar, setAvatar] = useState({});
   const [user, setUser] = useState(props.user);
   const [imgSource, setImgSource] = useState(api_origin + props.user.image);
@@ -29,19 +28,21 @@ function Profile(props) {
   const [isProcess, setIsProcess] = useState(false);
   const [isDisabled, setIsDisabled] = useState(props.user.isVerified);
 
-  const {
-    user_id,
-    username,
-    first_name,
-    last_name,
-    email,
-    image,
-    gender,
-    phone,
-    bio,
-    age,
-    isVerified,
-  } = user;
+  // console.log(user);
+
+  // const {
+  //   user_id,
+  //   username,
+  //   first_name,
+  //   last_name,
+  //   email,
+  //   image,
+  //   gender,
+  //   phone,
+  //   bio,
+  //   age,
+  //   isVerified,
+  // } = user;
 
   const resendVerification = async () => {
     setIsProcess(!isProcess);
@@ -69,7 +70,7 @@ function Profile(props) {
         `/users/profile`,
         config
       );
-
+      console.log(resGetUserProfile);
       setUser(resGetUserProfile.data.data.result);
       setEditProfile(false);
       window.location.reload();
@@ -89,17 +90,23 @@ function Profile(props) {
       const session = await getSession();
 
       const { accessToken } = session.user;
+      // console.log(accessToken);
 
       const body = new FormData();
       body.append("avatar", avatar);
 
       const config = {
-        headers: { Authorization: `bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       };
 
       const res = await axiosInstance.patch("/users/avatar", body, config);
+      const resGetUserProfile = await axiosInstance.get(
+        `/users/profile`,
+        config
+      );
 
-      setUser(res.data.result);
+      console.log(resGetUserProfile.data.data.result);
+      setUser(resGetUserProfile.data.data.result);
       alert(res.data.message);
     } catch (error) {
       alert(error.response.data.message);
@@ -153,22 +160,22 @@ function Profile(props) {
                 rounded="full"
                 marginBottom={2}
               />
-              {first_name && (
+              {user.first_name && (
                 <Text
                   fontSize={"md"}
                   fontFamily="cursive"
-                >{`${first_name} ${last_name}`}</Text>
+                >{`${user.first_name} ${user.last_name}`}</Text>
               )}
-              <Text fontSize={"md"}>{`${username}`}</Text>
+              <Text fontSize={"md"}>{`${user.username}`}</Text>
 
-              {bio && (
+              {user.bio && (
                 <Text
                   marginBottom={5}
                   fontStyle="italic"
                   fontWeight={"light"}
                   fontSize="lg"
                 >
-                  {bio}
+                  {user.bio}
                 </Text>
               )}
               <TableContainer>
@@ -176,15 +183,15 @@ function Profile(props) {
                   <Tbody>
                     <Tr>
                       <Td>Username</Td>
-                      <Td>{username}</Td>
+                      <Td>{user.username}</Td>
                     </Tr>
                     <Tr>
                       <Td>Fullname</Td>
-                      <Td>{`${first_name} ${last_name}`}</Td>
+                      <Td>{`${user.first_name} ${user.last_name}`}</Td>
                     </Tr>
                     <Tr>
                       <Td>Email</Td>
-                      <Td>{email}</Td>
+                      <Td>{user.email}</Td>
                     </Tr>
                   </Tbody>
                 </Table>
@@ -227,7 +234,7 @@ function Profile(props) {
                           width="full"
                           name="bio"
                           type="text"
-                          value={bio}
+                          value={user.bio}
                           variant="filled"
                           onChange={onHandleChange}
                         />
@@ -240,7 +247,7 @@ function Profile(props) {
                           width="full"
                           name="username"
                           type="text"
-                          value={username}
+                          value={user.username}
                           variant="filled"
                           onChange={onHandleChange}
                         />
@@ -253,7 +260,7 @@ function Profile(props) {
                           width="full"
                           name="first_name"
                           type="text"
-                          value={first_name}
+                          value={user.first_name}
                           variant="filled"
                           onChange={onHandleChange}
                         />
@@ -266,7 +273,7 @@ function Profile(props) {
                           width="full"
                           name="last_name"
                           type="text"
-                          value={last_name}
+                          value={user.last_name}
                           variant="filled"
                           onChange={onHandleChange}
                         />
@@ -280,7 +287,7 @@ function Profile(props) {
                           name="email"
                           type="text"
                           disabled
-                          value={email}
+                          value={user.email}
                           variant="filled"
                           onChange={onHandleChange}
                         />
