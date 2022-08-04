@@ -21,6 +21,7 @@ import {
 import UserProfile from "../../components/UserProfile";
 
 function Profile(props) {
+  console.log(props);
   const [avatar, setAvatar] = useState({});
   const [user, setUser] = useState(props.user);
   const [imgSource, setImgSource] = useState(api_origin + props.user.image);
@@ -53,7 +54,7 @@ function Profile(props) {
     setIsProcess(false);
   };
 
-  const onSaveAvatarUpdate = async () => {
+  const onSaveProfileUpdate = async () => {
     try {
       const session = await getSession();
 
@@ -62,7 +63,7 @@ function Profile(props) {
       const config = {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
-      await axiosInstance.patch(`/users/avatar`, user, config);
+      await axiosInstance.patch(`/users/`, user, config);
 
       const resGetUserProfile = await axiosInstance.get(
         `/users/profile`,
@@ -250,7 +251,7 @@ function Profile(props) {
                       <Td>
                         <Input
                           width="full"
-                          name="firstName"
+                          name="first_name"
                           type="text"
                           value={first_name}
                           variant="filled"
@@ -263,7 +264,7 @@ function Profile(props) {
                       <Td>
                         <Input
                           width="full"
-                          name="lastName"
+                          name="last_name"
                           type="text"
                           value={last_name}
                           variant="filled"
@@ -288,7 +289,7 @@ function Profile(props) {
                   </Tbody>
                 </Table>
               </TableContainer>
-              <Button onClick={onSaveAvatarUpdate}>Save</Button>
+              <Button onClick={onSaveProfileUpdate}>Save</Button>
             </Box>
           )}
         </Flex>
@@ -318,8 +319,7 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     console.log({ error });
-    const { message } = error;
-    return { props: { message } };
+    return { props: {} };
   }
 }
 
