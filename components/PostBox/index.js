@@ -8,7 +8,7 @@ import { getSession } from "next-auth/react";
 
 export default function PostBox(props) {
   const [user, setUser] = useState(props.user);
-  const [caption, setCaption] = useState("");
+  const [desc, setDesc] = useState("");
   const [post_image, setPostImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(!props.user.isVerified);
@@ -24,14 +24,14 @@ export default function PostBox(props) {
       headers: { Authorization: `Bearer ${accessToken}` },
     };
     const newPost = {
-      caption,
+      desc,
     };
     if (post_image) {
       const data = new FormData();
       const fileName = Date.now() + post_image.name;
       data.append("name", fileName);
       data.append("post_image", post_image);
-      newPost.postImage = `/public/post/${fileName}`;
+      newPost.post_image = `/public/post/${fileName}`;
       try {
         await axiosInstance.post("/posts/upload", data, config);
       } catch (error) {
@@ -74,7 +74,7 @@ export default function PostBox(props) {
           resize="none"
           height="fit-content"
           placeholder="Confront somebody?"
-          value={caption}
+          value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
         {post_image && (
