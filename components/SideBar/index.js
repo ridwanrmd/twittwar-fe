@@ -29,7 +29,7 @@ function SideBar() {
         fontSize="50px"
         marginStart="10px"
         marginBottom="20px"
-        color="var(--twittwar-color)"
+        // color="var(--twittwar-color)"
       />
 
       <NextLink href="/home" passHref>

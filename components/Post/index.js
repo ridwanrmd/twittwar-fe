@@ -30,13 +30,17 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
 export default function Post(props) {
-  const [likes, setLikes] = useState(props.post.likes.length);
-  const [comments, setComments] = useState(props.post.comments.length);
+  // console.log(props);
+  const [likes, setLikes] = useState(props.post.Likes.length);
+  const [comments, setComments] = useState(props.post.Comments.length);
   const [isLiked, setIsLiked] = useState(
-    props.post.likes.includes(props.user._id)
+    props.post.Likes.includes(props.user.user_id)
   );
   const [editMode, setEditMode] = useState(false);
   const [post, setPost] = useState(props.post);
+
+  const users = post.User;
+  console.log(users);
 
   const onDeleteHandler = async () => {
     try {
@@ -73,7 +77,7 @@ export default function Post(props) {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
       const body = {
-        desc: post.desc,
+        caption: post.caption,
       };
       const editPost = await axiosInstance.patch(
         `/posts/update/${post._id}`,
@@ -100,7 +104,7 @@ export default function Post(props) {
       await axiosInstance.put(
         `/posts/${post._id}`,
         {
-          userId: props.user._id,
+          user_id: props.user.user_id,
         },
         config
       );
@@ -124,7 +128,7 @@ export default function Post(props) {
         >
           <Flex>
             <Image
-              src={api_origin + post.postedBy.profilePicture}
+              src={api_origin + users.image}
               height="45px"
               width="45px"
               objectFit={"cover"}
@@ -132,7 +136,7 @@ export default function Post(props) {
               marginBottom={2}
             ></Image>
             <Text marginStart={3} marginTop={2} fontSize="xl">
-              @{post.postedBy.username}
+              {users.username}
             </Text>
             <Text marginStart={3} marginTop={3}>
               {moment(post.createdAt).fromNow()}
@@ -145,7 +149,7 @@ export default function Post(props) {
                 icon={<BsThreeDots />}
                 variant="ghost"
               />
-              {post.postedBy._id === props.user._id && (
+              {users.user_id === props.user.user_id && (
                 <MenuList>
                   <MenuItem
                     icon={<BsPencil />}
@@ -172,16 +176,16 @@ export default function Post(props) {
             </Menu>
           </Flex>
           {props.user.isVerified ? (
-            <NextLink href={`/post/${post._id}`}>
+            <NextLink href={`/post/${post.post_id}`}>
               <Link variant="unstyle">
                 <Text marginStart={12} marginBottom={2}>
-                  {post.desc}
+                  {post.caption}
                 </Text>
-                {post.postImage && (
+                {post.post_image && (
                   <Image
                     marginStart={12}
                     rounded="10"
-                    src={api_origin + post.postImage}
+                    src={api_origin + post.post_image}
                     maxHeight="400px"
                     width="90%"
                   ></Image>
@@ -192,14 +196,14 @@ export default function Post(props) {
             <NextLink href="#">
               <Link variant="unstyle">
                 <Text marginStart={12} marginBottom={2}>
-                  {post.desc}
+                  {post.caption}
                 </Text>
-                {post.postImage && (
+                {post.post_image && (
                   <Image
                     marginStart={12}
                     rounded="10"
                     objectFit={"cover"}
-                    src={api_origin + post.postImage}
+                    src={api_origin + post.post_image}
                     maxHeight="400px"
                     width="90%"
                   ></Image>
@@ -238,7 +242,7 @@ export default function Post(props) {
             )}
             <Text marginTop={1.5}>{likes}</Text>
             {props.user.isVerified ? (
-              <NextLink href={`/post/${post._id}`}>
+              <NextLink href={`/post/${post.post_id}`}>
                 <Link variant="unstyle">
                   <IconButton
                     marginStart={10}
@@ -283,7 +287,7 @@ export default function Post(props) {
         >
           <Flex>
             <Image
-              src={api_origin + post.postedBy.profilePicture}
+              src={api_origin + users.image}
               height="45px"
               width="45px"
               objectFit={"cover"}
@@ -291,7 +295,7 @@ export default function Post(props) {
               marginBottom={2}
             ></Image>
             <Text marginStart={3} marginTop={2} fontSize="xl">
-              @{post.postedBy.username}
+              {users.username}
             </Text>
             <Spacer />
             <Menu>
@@ -301,7 +305,7 @@ export default function Post(props) {
                 icon={<BsThreeDots />}
                 variant="ghost"
               />
-              {post.postedBy._id === props.user._id && (
+              {users.user_id === props.user.user_id && (
                 <MenuList>
                   <MenuItem
                     icon={<BsPencil />}
@@ -332,15 +336,15 @@ export default function Post(props) {
             marginBottom={2}
             name="desc"
             variant="unstyled"
-            value={post.desc}
+            value={caption}
             onChange={onChangeHandler}
           />
-          {post.postImage && (
+          {post.post_image && (
             <Image
               marginStart={12}
               rounded="10"
               objectFit={"cover"}
-              src={api_origin + post.postImage}
+              src={api_origin + post.post_image}
               maxHeight="400px"
               width="90%"
             ></Image>
@@ -377,7 +381,7 @@ export default function Post(props) {
               )}
               <Text marginTop={1.5}>{likes}</Text>
               {props.user.isVerified ? (
-                <NextLink href={`/post/${post._id}`}>
+                <NextLink href={`/post/${post.post_id}`}>
                   <Link variant="unstyle">
                     <IconButton
                       marginStart={10}

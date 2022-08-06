@@ -46,9 +46,10 @@ function Profile(props) {
 
   const resendVerification = async () => {
     setIsProcess(!isProcess);
+    // console.log(props);
     const body = {
-      email,
-      user_id,
+      email: props.user.email,
+      user_id: props.user.user_id,
     };
     await axiosInstance.post("/users/verify", body);
     alert("Success sending verification email");

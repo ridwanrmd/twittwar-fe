@@ -3,9 +3,9 @@ import Sidebar from "../../components/Sidebar";
 import { Flex, Button, Box, Text, HStack, VStack } from "@chakra-ui/react";
 import { getSession } from "next-auth/react";
 import axiosInstance from "../../services/axios";
-// import Post from "../../components/Post";
+import Post from "../../components/Post";
 import PostBox from "../../components/PostBox";
-// import InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-infinite-scroller";
 import UserProfile from "../../components/UserProfile";
 
 function Home(props) {
@@ -37,7 +37,6 @@ function Home(props) {
     const res = await axiosInstance.get("/posts/", {
       params: { page: 1, pageSize },
     });
-    console.log(res.data);
 
     setPost(res.data.data);
     setPostLength(res.data.length);
@@ -56,18 +55,18 @@ function Home(props) {
     setIsProcess(false);
   };
 
-  // const renderPost = () => {
-  //   return post.map((post) => {
-  //     return (
-  //       <Post
-  //         key={post.post_id}
-  //         post={post}
-  //         user={props.user}
-  //         getPost={getPost}
-  //       ></Post>
-  //     );
-  //   });
-  // };
+  const renderPost = () => {
+    return post.map((post) => {
+      return (
+        <Post
+          key={post.post_id}
+          user={post.User}
+          post={post}
+          getPost={getPost}
+        ></Post>
+      );
+    });
+  };
 
   return (
     <VStack>
@@ -97,16 +96,24 @@ function Home(props) {
 
         <Flex flexGrow={"0.4"} w="70%" flexDirection="column" marginInline={2}>
           <PostBox user={props.user} getPost={getPost} />
-          <Box
-            rounded={5}
-            boxShadow="md"
-            marginBottom={2}
-            padding="2"
-            marginInlineStart={"25%"}
-            key={0}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={morePost}
+            loader={
+              <Box
+                rounded={5}
+                boxShadow="md"
+                marginBottom={2}
+                padding="2"
+                marginInlineStart={"25%"}
+                key={0}
+              >
+                Loading ...
+              </Box>
+            }
           >
             {renderPost()}
-          </Box>
+          </InfiniteScroll>
         </Flex>
         <UserProfile user={props.user} />
       </Flex>
@@ -134,10 +141,15 @@ export async function getServerSideProps(context) {
     const getPost = await axiosInstance.get("/posts/", {
       params: { page, pageSize },
     });
-    console.log(getPost);
+    // console.log(getPost.data.data[0].User);
 
     return {
-      props: { user: res.data.data.result, session },
+      props: {
+        user: res.data.data.result,
+        post: getPost.data.data,
+        length: getPost.data.length,
+        session,
+      },
     };
   } catch (error) {
     console.error(error.response.data);
