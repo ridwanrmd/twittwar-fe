@@ -40,7 +40,7 @@ export default function Post(props) {
   const [post, setPost] = useState(props.post);
 
   const users = post.User;
-  console.log(users);
+  // console.log(users);
 
   const onDeleteHandler = async () => {
     try {
@@ -69,6 +69,7 @@ export default function Post(props) {
 
   const onEditHandler = async () => {
     try {
+      console.log(props.post);
       if (!props.user.isVerified)
         return alert("You need to verify your account");
       const session = await getSession();
@@ -80,7 +81,7 @@ export default function Post(props) {
         caption: post.caption,
       };
       const editPost = await axiosInstance.patch(
-        `/posts/update/${post._id}`,
+        `/posts/${post.post_id}`,
         body,
         config
       );
@@ -94,6 +95,7 @@ export default function Post(props) {
 
   const onLikeHandler = async () => {
     try {
+      // console.log(post);
       if (!props.user.isVerified)
         return alert("You need to verify your account");
       const session = await getSession();
@@ -101,8 +103,9 @@ export default function Post(props) {
       const config = {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
-      await axiosInstance.put(
-        `/posts/${post._id}`,
+      console.log(post);
+      await axiosInstance.post(
+        `/likes/${post.post_id}`,
         {
           user_id: props.user.user_id,
         },
@@ -334,9 +337,9 @@ export default function Post(props) {
           <Textarea
             marginStart={12}
             marginBottom={2}
-            name="desc"
+            name="caption"
             variant="unstyled"
-            value={caption}
+            value={post.caption}
             onChange={onChangeHandler}
           />
           {post.post_image && (

@@ -9,6 +9,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import UserProfile from "../../components/UserProfile";
 
 function Home(props) {
+  // console.log(props);
   const [post, setPost] = useState(props.post);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(3);
@@ -141,7 +142,7 @@ export async function getServerSideProps(context) {
     const getPost = await axiosInstance.get("/posts/", {
       params: { page, pageSize },
     });
-    // console.log(getPost.data.data[0].User);
+    console.log(getPost.data.data);
 
     return {
       props: {
