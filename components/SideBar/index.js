@@ -42,7 +42,7 @@ function SideBar() {
           <SideBarRow Icon={HiOutlineUser} text="Profile" />
         </Link>
       </NextLink>
-      <NextLink href="/post" passHref>
+      <NextLink href="/post/userPost" passHref>
         <Link style={{ textDecoration: "none" }}>
           <SideBarRow Icon={FiMail} text="My Argument" />
         </Link>

@@ -31,7 +31,7 @@ function Home(props) {
         setPost(newPost);
         setPage(page + 1);
       }
-    }, 500);
+    }, 2000);
   };
 
   const getPost = async () => {
@@ -100,6 +100,7 @@ function Home(props) {
           <InfiniteScroll
             pageStart={0}
             loadMore={morePost}
+            hasMore={hasMore}
             loader={
               <Box
                 rounded={5}
@@ -109,7 +110,7 @@ function Home(props) {
                 marginInlineStart={"25%"}
                 key={0}
               >
-                Loading ...
+                wait a minute ...
               </Box>
             }
           >
