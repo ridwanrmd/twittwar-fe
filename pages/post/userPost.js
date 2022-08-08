@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { Flex, Box, VStack } from "@chakra-ui/react";
@@ -47,7 +46,6 @@ function userPost(props) {
   };
 
   const getPost = async () => {
-    // console.log(user);
     const session = await getSession();
     const { accessToken } = session.user;
     const { user_id } = session.user;
