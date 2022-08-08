@@ -46,7 +46,6 @@ function Register() {
       };
       await axiosInstance.post("/users/register", body);
     } catch (error) {
-      console.log({ error });
       if (error.response.data) return alert(error.response.data.message);
       alert(error.message);
     } finally {
