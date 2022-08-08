@@ -28,25 +28,8 @@ function Profile(props) {
   const [isProcess, setIsProcess] = useState(false);
   const [isDisabled, setIsDisabled] = useState(props.user.isVerified);
 
-  // console.log(user);
-
-  // const {
-  //   user_id,
-  //   username,
-  //   first_name,
-  //   last_name,
-  //   email,
-  //   image,
-  //   gender,
-  //   phone,
-  //   bio,
-  //   age,
-  //   isVerified,
-  // } = user;
-
   const resendVerification = async () => {
     setIsProcess(!isProcess);
-    // console.log(props);
     const body = {
       email: props.user.email,
       user_id: props.user.user_id,
@@ -71,7 +54,6 @@ function Profile(props) {
         `/users/profile`,
         config
       );
-      console.log(resGetUserProfile);
       setUser(resGetUserProfile.data.data.result);
       setEditProfile(false);
       window.location.reload();
@@ -91,7 +73,6 @@ function Profile(props) {
       const session = await getSession();
 
       const { accessToken } = session.user;
-      // console.log(accessToken);
 
       const body = new FormData();
       body.append("avatar", avatar);
@@ -106,7 +87,6 @@ function Profile(props) {
         config
       );
 
-      console.log(resGetUserProfile.data.data.result);
       setUser(resGetUserProfile.data.data.result);
       alert(res.data.message);
     } catch (error) {
@@ -310,7 +290,6 @@ function Profile(props) {
 export async function getServerSideProps(context) {
   try {
     const session = await getSession({ req: context.req });
-    console.log({ session });
 
     if (!session) return { redirect: { destination: "/login" } };
 
