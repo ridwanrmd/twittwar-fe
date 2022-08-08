@@ -13,6 +13,7 @@ function PostDetail(props) {
   const { comment } = props;
 
   const [listComment, setListComment] = useState(comment);
+  // console.log(listComment);
   const [commentLength, setCommentLength] = useState(props.commentLength);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -87,7 +88,7 @@ function PostDetail(props) {
           >
             <CommentBox
               key={comment.comment_id}
-              postId={post.post_id}
+              post_id={post.post_id}
               getComments={getComments}
             />
             {renderComment()}
@@ -113,7 +114,7 @@ export async function getServerSideProps(context) {
 
     if (!session) return { redirect: { destination: "/login" } };
 
-    const { accessToken, userId } = session.user;
+    const { accessToken } = session.user;
     const page = 1;
     const pageSize = 5;
 
@@ -127,12 +128,13 @@ export async function getServerSideProps(context) {
     const comment = await axiosInstance.get(`/comments/${post_id}`, config);
     const user = await axiosInstance.get("/users/profile/", config);
     const post = await axiosInstance.get(`/posts/${post_id}`, config);
+    // console.log(comment.data.length);
     return {
       props: {
         post: post.data.data,
         user: user.data.data.result,
         comment: comment.data.data,
-        commentLength: comment.data.length,
+        commentLength: comment.data.length.length,
       },
     };
   } catch (error) {

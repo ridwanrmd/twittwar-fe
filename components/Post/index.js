@@ -40,8 +40,6 @@ export default function Post(props) {
   const [editMode, setEditMode] = useState(false);
   const [post, setPost] = useState(props.post);
 
-  console.log(props.post.Likes);
-
   const users = post.User;
 
   const onDeleteHandler = async () => {

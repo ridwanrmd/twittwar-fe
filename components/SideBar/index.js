@@ -11,7 +11,6 @@ import SideBarRow from "./SideBarRow";
 
 function SideBar() {
   const { data: session } = useSession();
-  console.log({ session });
 
   return (
     <Box

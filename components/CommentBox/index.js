@@ -33,8 +33,8 @@ export default function CommentBox(props) {
       headers: { Authorization: `Bearer ${accessToken}` },
     };
     const body = {
-      text: content,
-      postId: props.post_id,
+      content,
+      post_id: props.post_id,
     };
     try {
       await axiosInstance.post("/comments/", body, config);
