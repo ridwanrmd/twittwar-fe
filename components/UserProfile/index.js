@@ -20,10 +20,12 @@ function UserProfile(props) {
             width="40px"
             height="40px"
           />
-          <Text
-            fontWeight={"medium"}
-            fontStyle="italic"
-          >{`${props.user.username}`}</Text>
+          <Flex direction="column">
+            <Text fontWeight={"medium"} fontStyle="italic">
+              {`${props.user.username}`}
+            </Text>
+            {!props.user.isVerified && <Box color="red">Unverivied user</Box>}
+          </Flex>
         </HStack>
         <Button onClick={onLogoutClick} variant="ghost" w="100%">
           Logout
