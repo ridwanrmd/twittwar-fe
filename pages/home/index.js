@@ -9,7 +9,6 @@ import InfiniteScroll from "react-infinite-scroller";
 import UserProfile from "../../components/UserProfile";
 
 function Home(props) {
-  // console.log(props);
   const [post, setPost] = useState(props.post);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(3);
@@ -126,7 +125,6 @@ function Home(props) {
 export async function getServerSideProps(context) {
   try {
     const session = await getSession({ req: context.req });
-    // console.log({ session });
 
     if (!session) return { redirect: { destination: "/login" } };
 
@@ -143,7 +141,6 @@ export async function getServerSideProps(context) {
     const getPost = await axiosInstance.get("/posts/", {
       params: { page, pageSize },
     });
-    console.log(getPost.data.data);
 
     return {
       props: {
