@@ -30,7 +30,6 @@ function Login() {
   if (session) router.replace("/home");
 
   const onLoginClick = async () => {
-    console.log(emailUsername);
     setisLoginProcess(true);
     const res = await signIn("credentials", {
       redirect: false,
