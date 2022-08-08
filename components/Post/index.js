@@ -30,17 +30,19 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
 export default function Post(props) {
-  // console.log(props);
   const [likes, setLikes] = useState(props.post.Likes.length);
   const [comments, setComments] = useState(props.post.Comments.length);
   const [isLiked, setIsLiked] = useState(
-    props.post.Likes.includes(props.user.user_id)
+    props.post.Likes.some(function (user) {
+      return user.user_id === props.user.user_id;
+    })
   );
   const [editMode, setEditMode] = useState(false);
   const [post, setPost] = useState(props.post);
 
+  console.log(props.post.Likes);
+
   const users = post.User;
-  // console.log(users);
 
   const onDeleteHandler = async () => {
     try {
@@ -69,7 +71,6 @@ export default function Post(props) {
 
   const onEditHandler = async () => {
     try {
-      console.log(props.post);
       if (!props.user.isVerified)
         return alert("You need to verify your account");
       const session = await getSession();
@@ -95,7 +96,6 @@ export default function Post(props) {
 
   const onLikeHandler = async () => {
     try {
-      // console.log(post);
       if (!props.user.isVerified)
         return alert("You need to verify your account");
       const session = await getSession();
@@ -103,7 +103,6 @@ export default function Post(props) {
       const config = {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
-      console.log(post);
       await axiosInstance.post(
         `/likes/${post.post_id}`,
         {
