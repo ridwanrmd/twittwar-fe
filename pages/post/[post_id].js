@@ -13,7 +13,6 @@ function PostDetail(props) {
   const { comment } = props;
 
   const [listComment, setListComment] = useState(comment);
-  // console.log(listComment);
   const [commentLength, setCommentLength] = useState(props.commentLength);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -128,7 +127,6 @@ export async function getServerSideProps(context) {
     const comment = await axiosInstance.get(`/comments/${post_id}`, config);
     const user = await axiosInstance.get("/users/profile/", config);
     const post = await axiosInstance.get(`/posts/${post_id}`, config);
-    // console.log(comment.data.length);
     return {
       props: {
         post: post.data.data,
